@@ -1,3 +1,24 @@
+/*-
+ * #%L
+ * Fiji distribution of ImageJ for the life sciences.
+ * %%
+ * Copyright (C) 2007 - 2017 Fiji developers.
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 2 of the
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-2.0.html>.
+ * #L%
+ */
 package spim.fiji.spimdata.explorer;
 
 import java.awt.BorderLayout;
@@ -29,9 +50,12 @@ import bdv.BigDataViewer;
 import bdv.img.hdf5.Hdf5ImageLoader;
 import bdv.tools.InitializeViewerState;
 import bdv.tools.brightness.ConverterSetup;
+import bdv.util.Affine3DHelpers;
 import bdv.viewer.DisplayMode;
+import bdv.viewer.Source;
 import bdv.viewer.ViewerOptions;
 import bdv.viewer.VisibilityAndGrouping;
+import bdv.viewer.state.ViewerState;
 import mpicbg.spim.data.SpimDataException;
 import mpicbg.spim.data.generic.AbstractSpimData;
 import mpicbg.spim.data.generic.XmlIoAbstractSpimData;
@@ -40,7 +64,10 @@ import mpicbg.spim.data.generic.sequence.BasicViewSetup;
 import mpicbg.spim.data.sequence.TimePoint;
 import mpicbg.spim.data.sequence.ViewId;
 import mpicbg.spim.io.IOFunctions;
+import net.imglib2.Interval;
+import net.imglib2.realtransform.AffineTransform3D;
 import net.imglib2.type.numeric.ARGBType;
+import net.imglib2.util.LinAlgHelpers;
 import spim.fiji.spimdata.SpimData2;
 import spim.fiji.spimdata.explorer.popup.ApplyTransformationPopup;
 import spim.fiji.spimdata.explorer.popup.BDVPopup;
@@ -144,6 +171,9 @@ public class ViewSetupExplorerPanel< AS extends AbstractSpimData< ? >, X extends
 
 //				if ( !bdv.tryLoadSettings( panel.xml() ) ) TODO: this should work, but currently tryLoadSettings is protected. fix that.
 					InitializeViewerState.initBrightness( 0.001, 0.999, bdvpopup.bdv.getViewer(), bdvpopup.bdv.getSetupAssignments() );
+
+				// do not rotate BDV view by default
+				BDVPopup.initTransform( bdvpopup.bdv.getViewer() );
 
 				setFusedModeSimple( bdvpopup.bdv, data );
 			}

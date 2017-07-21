@@ -1,3 +1,24 @@
+/*-
+ * #%L
+ * Fiji distribution of ImageJ for the life sciences.
+ * %%
+ * Copyright (C) 2007 - 2017 Fiji developers.
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 2 of the
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-2.0.html>.
+ * #L%
+ */
 package spim.fiji.spimdata.imgloaders;
 
 import ij.IJ;
@@ -101,13 +122,13 @@ public class LegacyLightSheetZ1ImgLoader extends AbstractImgFactoryImgLoader
 	@Override
 	protected void loadMetaData( final ViewId view )
 	{
-		IOFunctions.println( new Date( System.currentTimeMillis() ) + ": Loading metadata for Lightsheet Z1 imgloader not necessary." );
+		IOFunctions.printlnSafe( new Date( System.currentTimeMillis() ) + ": Loading metadata for Lightsheet Z1 imgloader not necessary." );
 	}
 
 	@Override
 	public void finalize()
 	{
-		IOFunctions.println( "Closing czi: " + cziFile );
+		IOFunctions.printlnSafe( "Closing czi: " + cziFile );
 
 		try
 		{
@@ -124,13 +145,13 @@ public class LegacyLightSheetZ1ImgLoader extends AbstractImgFactoryImgLoader
 	{
 		if ( meta == null )
 		{
-			IOFunctions.println( new Date( System.currentTimeMillis() ) + ": Investigating file '" + cziFile.getAbsolutePath() + "' (loading metadata)." );
+			IOFunctions.printlnSafe( new Date( System.currentTimeMillis() ) + ": Investigating file '" + cziFile.getAbsolutePath() + "' (loading metadata)." );
 
 			meta = new LightSheetZ1MetaData();
 
 			if ( !meta.loadMetaData( cziFile, true ) )
 			{
-				IOFunctions.println( "Failed to analyze file: '" + cziFile.getAbsolutePath() + "'." );
+				IOFunctions.printlnSafe( "Failed to analyze file: '" + cziFile.getAbsolutePath() + "'." );
 				meta = null;
 				isClosed = true;
 				return null;
@@ -191,7 +212,7 @@ public class LegacyLightSheetZ1ImgLoader extends AbstractImgFactoryImgLoader
 			{
 				if ( meta.getReader() == null )
 				{
-					IOFunctions.println( new Date( System.currentTimeMillis() ) + ": Opening '" + cziFile.getName() + "' for reading image data." );
+					IOFunctions.printlnSafe( new Date( System.currentTimeMillis() ) + ": Opening '" + cziFile.getName() + "' for reading image data." );
 					r.setId( cziFile.getAbsolutePath() );
 				}
 
@@ -204,7 +225,7 @@ public class LegacyLightSheetZ1ImgLoader extends AbstractImgFactoryImgLoader
 				r.setSeries( a.getId() );
 			}
 
-			IOFunctions.println(
+			IOFunctions.printlnSafe(
 					new Date( System.currentTimeMillis() ) + ": Reading image data from '" + cziFile.getName() + "' [" + dim[ 0 ] + "x" + dim[ 1 ] + "x" + dim[ 2 ] +
 					" angle=" + a.getName() + " ch=" + c.getName() + " illum=" + i.getName() + " tp=" + t.getName() + " type=" + meta.pixelTypeString() +
 					" img=" + img.getClass().getSimpleName() + "<" + type.getClass().getSimpleName() + ">]" );
@@ -264,8 +285,8 @@ public class LegacyLightSheetZ1ImgLoader extends AbstractImgFactoryImgLoader
 		}
 		catch ( Exception e )
 		{
-			IOFunctions.println( "File '" + cziFile.getAbsolutePath() + "' could not be opened: " + e );
-			IOFunctions.println( "Stopping" );
+			IOFunctions.printlnSafe( "File '" + cziFile.getAbsolutePath() + "' could not be opened: " + e );
+			IOFunctions.printlnSafe( "Stopping" );
 
 			e.printStackTrace();
 			try { r.close(); } catch (IOException e1) { e1.printStackTrace(); }

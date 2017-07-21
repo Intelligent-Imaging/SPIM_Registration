@@ -1,3 +1,24 @@
+/*-
+ * #%L
+ * Fiji distribution of ImageJ for the life sciences.
+ * %%
+ * Copyright (C) 2007 - 2017 Fiji developers.
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 2 of the
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-2.0.html>.
+ * #L%
+ */
 package spim.fiji.plugin;
 
 import ij.ImageJ;
@@ -109,7 +130,7 @@ public class Display_View implements PlugIn
 		}
 		
 		// display it
-		display( result.getData(), viewId, pixelType, name );
+		display( result.getData(), viewId, pixelType, name, false );
 	}
 
 	public static String name( final ViewDescription vd )
@@ -122,7 +143,7 @@ public class Display_View implements PlugIn
 		return "angle: " + angle.getName() + " channel: " + channel.getName() + " illum: " + illumination.getName() + " timepoint: " + tp.getName();
 	}
 
-	public static void display( final AbstractSpimData< ? > spimData, final ViewId viewId, final int pixelType, final String name )
+	public static void display( final AbstractSpimData< ? > spimData, final ViewId viewId, final int pixelType, final String name, final boolean virtual )
 	{
 		final ImgLoader imgLoader = (ImgLoader)spimData.getSequenceDescription().getImgLoader();
 		final ImgFactory< ? extends NativeType< ? > > factory;
@@ -142,7 +163,7 @@ public class Display_View implements PlugIn
 		}
 
 		// display it
-		DisplayImage export = new DisplayImage();
+		DisplayImage export = new DisplayImage( virtual );
 		
 		if ( pixelType == 0 )
 			export.exportImage( ((ImgLoader)spimData.getSequenceDescription().getImgLoader()).getSetupImgLoader( viewId.getViewSetupId() ).getFloatImage( viewId.getTimePointId(), false ), name );

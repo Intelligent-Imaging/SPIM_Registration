@@ -1,3 +1,24 @@
+/*-
+ * #%L
+ * Fiji distribution of ImageJ for the life sciences.
+ * %%
+ * Copyright (C) 2007 - 2017 Fiji developers.
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 2 of the
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-2.0.html>.
+ * #L%
+ */
 package spim.fiji.spimdata.imgloaders;
 
 import java.io.File;
@@ -81,10 +102,10 @@ public abstract class LegacyStackImgLoader extends AbstractImgFactoryImgLoader
 			if ( f.exists() )
 				return f;
 			else
-				IOFunctions.println( "File '" + f.getAbsolutePath() + "' does not exist." );
+				IOFunctions.printlnSafe( "File '" + f.getAbsolutePath() + "' does not exist." );
 		}
 
-		IOFunctions.println( "Could not find file for tp=" + timepoint + ", angle=" + angle + ", channel=" + channel + ", ill=" + illum );
+		IOFunctions.printlnSafe( "Could not find file for tp=" + timepoint + ", angle=" + angle + ", channel=" + channel + ", ill=" + illum );
 
 		return null;
 	}
@@ -141,18 +162,18 @@ public abstract class LegacyStackImgLoader extends AbstractImgFactoryImgLoader
 		if ( replaceAngles != null )
 			numDigitsAngles = replaceAngles.length() - 2;
 		/*
-		IOFunctions.println( replaceTimepoints );
-		IOFunctions.println( replaceChannels );
-		IOFunctions.println( replaceIlluminations );
-		IOFunctions.println( replaceAngles );
-		
-		IOFunctions.println( layoutTP );
-		IOFunctions.println( layoutChannels );
-		IOFunctions.println( layoutIllum );
-		IOFunctions.println( layoutAngles );
-		
-		IOFunctions.println( path );
-		IOFunctions.println( fileNamePattern );
-		*/		
+		IOFunctions.printlnSafe( replaceTimepoints );
+		IOFunctions.printlnSafe( replaceChannels );
+		IOFunctions.printlnSafe( replaceIlluminations );
+		IOFunctions.printlnSafe( replaceAngles );
+
+		IOFunctions.printlnSafe( layoutTP );
+		IOFunctions.printlnSafe( layoutChannels );
+		IOFunctions.printlnSafe( layoutIllum );
+		IOFunctions.printlnSafe( layoutAngles );
+
+		IOFunctions.printlnSafe( path );
+		IOFunctions.printlnSafe( fileNamePattern );
+		*/
 	}
 }

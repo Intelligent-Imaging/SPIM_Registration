@@ -1,3 +1,24 @@
+/*-
+ * #%L
+ * Fiji distribution of ImageJ for the life sciences.
+ * %%
+ * Copyright (C) 2007 - 2017 Fiji developers.
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 2 of the
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-2.0.html>.
+ * #L%
+ */
 package spim.fiji.spimdata.imgloaders;
 
 import ij.IJ;
@@ -171,7 +192,7 @@ public class LegacyStackImgLoaderLOCI extends LegacyStackImgLoader
 
 			if ( imp2d.getStack().getSize() > 1 )
 			{
-				IOFunctions.println( "This is not a two-dimensional file: '" + path + "'" );
+				IOFunctions.printlnSafe( "This is not a two-dimensional file: '" + path + "'" );
 				imp2d.close();
 				return null;
 			}
@@ -181,7 +202,7 @@ public class LegacyStackImgLoaderLOCI extends LegacyStackImgLoader
 			if ( output == null )
 				throw new RuntimeException( "Could not instantiate " + getImgFactory().getClass().getSimpleName() + " for '" + path + "', most likely out of memory." );
 
-			IOFunctions.println( new Date( System.currentTimeMillis() ) + ": Opening '" + path + "' [" + imp2d.getWidth() + "x" + imp2d.getHeight() + "x" + depth + " type=" +
+			IOFunctions.printlnSafe( new Date( System.currentTimeMillis() ) + ": Opening '" + path + "' [" + imp2d.getWidth() + "x" + imp2d.getHeight() + "x" + depth + " type=" +
 					imp2d.getProcessor().getClass().getSimpleName() + " image=" + output.getClass().getSimpleName() + "<" + type.getClass().getSimpleName() + ">]" );
 
 			for ( int z = 0; z < depth; ++z )
@@ -239,7 +260,7 @@ public class LegacyStackImgLoaderLOCI extends LegacyStackImgLoader
 			if ( cal == 0 )
 			{
 				cal = 1;
-				IOFunctions.println( "StackListLOCI: Warning, calibration for dimension X seems corrupted, setting to 1." );
+				IOFunctions.printlnSafe( "StackListLOCI: Warning, calibration for dimension X seems corrupted, setting to 1." );
 			}
 			calX = cal;
 
@@ -247,7 +268,7 @@ public class LegacyStackImgLoaderLOCI extends LegacyStackImgLoader
 			if ( cal == 0 )
 			{
 				cal = 1;
-				IOFunctions.println( "StackListLOCI: Warning, calibration for dimension Y seems corrupted, setting to 1." );
+				IOFunctions.printlnSafe( "StackListLOCI: Warning, calibration for dimension Y seems corrupted, setting to 1." );
 			}
 			calY = cal;
 
@@ -255,13 +276,13 @@ public class LegacyStackImgLoaderLOCI extends LegacyStackImgLoader
 			if ( cal == 0 )
 			{
 				cal = 1;
-				IOFunctions.println( "StackListLOCI: Warning, calibration for dimension Z seems corrupted, setting to 1." );
+				IOFunctions.printlnSafe( "StackListLOCI: Warning, calibration for dimension Z seems corrupted, setting to 1." );
 			}
 			calZ = cal;
 		}
 		catch ( Exception e )
 		{
-			IOFunctions.println( "Failed to read calibration, setting to 1x1x1um." );
+			IOFunctions.printlnSafe( "Failed to read calibration, setting to 1x1x1um." );
 			calX = calY = calZ = 1;
 		}
 
@@ -293,7 +314,7 @@ public class LegacyStackImgLoaderLOCI extends LegacyStackImgLoader
 
 		if (!(pixelType == FormatTools.UINT8 || pixelType == FormatTools.UINT16 || pixelType == FormatTools.UINT32 || pixelType == FormatTools.FLOAT))
 		{
-			IOFunctions.println( "StackImgLoaderLOCI.openLOCI(): PixelType " + pixelTypeString + " not supported by " +
+			IOFunctions.printlnSafe( "StackImgLoaderLOCI.openLOCI(): PixelType " + pixelTypeString + " not supported by " +
 					type.getClass().getSimpleName() + ", returning. ");
 
 			r.close();
@@ -311,7 +332,7 @@ public class LegacyStackImgLoaderLOCI extends LegacyStackImgLoader
 			throw new RuntimeException( "Could not instantiate " + getImgFactory().getClass().getSimpleName() + " for '" + path + "', most likely out of memory." );
 		}
 		else
-			IOFunctions.println( new Date( System.currentTimeMillis() ) + ": Opening '" + path + "' [" + width + "x" + height + "x" + depth + " ch=" + c + " tp=" + t + " type=" + pixelTypeString + " image=" + img.getClass().getSimpleName() + "<" + type.getClass().getSimpleName() + ">]" );
+			IOFunctions.printlnSafe( new Date( System.currentTimeMillis() ) + ": Opening '" + path + "' [" + width + "x" + height + "x" + depth + " ch=" + c + " tp=" + t + " type=" + pixelTypeString + " image=" + img.getClass().getSimpleName() + "<" + type.getClass().getSimpleName() + ">]" );
 
 		final byte[] b = new byte[width * height * bytesPerPixel];
 
@@ -489,7 +510,7 @@ public class LegacyStackImgLoaderLOCI extends LegacyStackImgLoader
 			if ( cal == 0 )
 			{
 				cal = 1;
-				IOFunctions.println( "StackListLOCI: Warning, calibration for dimension X seems corrupted, setting to 1." );
+				IOFunctions.printlnSafe( "StackListLOCI: Warning, calibration for dimension X seems corrupted, setting to 1." );
 			}
 			final double calX = cal;
 
@@ -500,7 +521,7 @@ public class LegacyStackImgLoaderLOCI extends LegacyStackImgLoader
 			if ( cal == 0 )
 			{
 				cal = 1;
-				IOFunctions.println( "StackListLOCI: Warning, calibration for dimension Y seems corrupted, setting to 1." );
+				IOFunctions.printlnSafe( "StackListLOCI: Warning, calibration for dimension Y seems corrupted, setting to 1." );
 			}
 			final double calY = cal;
 
@@ -511,11 +532,11 @@ public class LegacyStackImgLoaderLOCI extends LegacyStackImgLoader
 			if ( cal == 0 )
 			{
 				cal = 1;
-				IOFunctions.println( "StackListLOCI: Warning, calibration for dimension Z seems corrupted, setting to 1." );
+				IOFunctions.printlnSafe( "StackListLOCI: Warning, calibration for dimension Z seems corrupted, setting to 1." );
 			}
 			final double calZ = cal;
 
-			IOFunctions.println( "Image stack size of first stack: " + r.getSizeX() + "x" + r.getSizeY() + "x" + r.getSizeZ() );
+			IOFunctions.printlnSafe( "Image stack size of first stack: " + r.getSizeX() + "x" + r.getSizeY() + "x" + r.getSizeZ() );
 
 			final Calibration calibration = new Calibration( r.getSizeX(), r.getSizeY(), r.getSizeZ(), calX, calY, calZ );
 
@@ -525,7 +546,7 @@ public class LegacyStackImgLoaderLOCI extends LegacyStackImgLoader
 		}
 		catch ( Exception e)
 		{
-			IOFunctions.println( "Could not open file: '" + file.getAbsolutePath() + "'" );
+			IOFunctions.printlnSafe( "Could not open file: '" + file.getAbsolutePath() + "'" );
 			e.printStackTrace();
 			return null;
 		}

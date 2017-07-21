@@ -1,3 +1,24 @@
+/*-
+ * #%L
+ * Fiji distribution of ImageJ for the life sciences.
+ * %%
+ * Copyright (C) 2007 - 2017 Fiji developers.
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 2 of the
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-2.0.html>.
+ * #L%
+ */
 package mpicbg.spim.io;
 
 import java.io.BufferedReader;
@@ -8,6 +29,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+
+import javax.swing.SwingUtilities;
 
 import bdv.export.ProgressWriter;
 import bdv.export.ProgressWriterConsole;
@@ -70,6 +93,36 @@ public class IOFunctions
 			return progressWriterIJ;
 		else
 			return progressWriterConsole;
+	}
+
+	public static void printlnSafe() { printlnSafe( "" ); }
+	public static void printlnSafe( final Object object) { printlnSafe( object.toString() ); }
+	public static void printlnSafe( final String string )
+	{
+		if ( printIJLog )
+		{
+			if ( SwingUtilities.isEventDispatchThread() )
+				IJ.log( string );
+			else
+				SwingUtilities.invokeLater( () -> IJ.log( string ) );
+		}
+		else
+			System.out.println( string );
+	}
+
+	public static void printErrSafe() { printErr( "" ); }
+	public static void printErrSafe( final Object object) { printErr( object.toString() ); }
+	public static void printErrSafe( final String string )
+	{
+		if ( printIJLog )
+		{
+			if ( SwingUtilities.isEventDispatchThread() )
+				IJ.error( string );
+			else
+				SwingUtilities.invokeLater( () -> IJ.error( string ) );
+		}
+		else
+			System.err.println( string );
 	}
 
 	public static SPIMConfiguration initSPIMProcessing()

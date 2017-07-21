@@ -1,3 +1,24 @@
+/*-
+ * #%L
+ * Fiji distribution of ImageJ for the life sciences.
+ * %%
+ * Copyright (C) 2007 - 2017 Fiji developers.
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 2 of the
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-2.0.html>.
+ * #L%
+ */
 package spim.fiji.spimdata.imgloaders;
 
 import ij.IJ;
@@ -105,13 +126,13 @@ public class LegacySlideBook6ImgLoader extends AbstractImgFactoryImgLoader
 	@Override
 	protected void loadMetaData( final ViewId view )
 	{
-		IOFunctions.println( new Date( System.currentTimeMillis() ) + ": Loading metadata for SlideBook6 imgloader not necessary." );
+		IOFunctions.printlnSafe( new Date( System.currentTimeMillis() ) + ": Loading metadata for SlideBook6 imgloader not necessary." );
 	}
 
 	@Override
 	public void finalize()
 	{
-		IOFunctions.println( "Closing sld: " + sldFile );
+		IOFunctions.printlnSafe( "Closing sld: " + sldFile );
 
 		try
 		{
@@ -128,13 +149,13 @@ public class LegacySlideBook6ImgLoader extends AbstractImgFactoryImgLoader
 	{
 		if ( meta == null )
 		{
-			IOFunctions.println( new Date( System.currentTimeMillis() ) + ": Investigating file '" + sldFile.getAbsolutePath() + "' (loading metadata)." );
+			IOFunctions.printlnSafe( new Date( System.currentTimeMillis() ) + ": Investigating file '" + sldFile.getAbsolutePath() + "' (loading metadata)." );
 
 			meta = new SlideBook6MetaData();
 
 			if ( !meta.loadMetaData( sldFile, true ) )
 			{
-				IOFunctions.println( "Failed to analyze file: '" + sldFile.getAbsolutePath() + "'." );
+				IOFunctions.printlnSafe( "Failed to analyze file: '" + sldFile.getAbsolutePath() + "'." );
 				meta = null;
 				isClosed = true;
 				return null;
@@ -212,7 +233,7 @@ public class LegacySlideBook6ImgLoader extends AbstractImgFactoryImgLoader
 		if ( img == null )
 			throw new RuntimeException( "Could not instantiate " + getImgFactory().getClass().getSimpleName() + " for '" + sldFile + "' captureId=" + c + "' viewId=" + view.getViewSetupId() + ", tpId=" + view.getTimePointId() + ", most likely out of memory." );
 
-		IOFunctions.println(
+		IOFunctions.printlnSafe(
 				new Date( System.currentTimeMillis() ) + ": Opening '" + sldFile.getName() + "' [" + dim[ 0 ] + "x" + dim[ 1 ] + "x" + dim[ 2 ] +
 						" angle=" + a.getName() + " ch=" + ch.getName() + " illum=" + i.getName() + " tp=" + t.getName() + " type=" + FormatTools.getPixelTypeString(FormatTools.UINT16) +
 						" img=" + img.getClass().getSimpleName() + "<" + type.getClass().getSimpleName() + ">]" );
@@ -241,7 +262,7 @@ public class LegacySlideBook6ImgLoader extends AbstractImgFactoryImgLoader
 			{
 				if ( meta.getReader() == null )
 				{
-					IOFunctions.println( new Date( System.currentTimeMillis() ) + ": Opening '" + sldFile.getName() + "' for reading image data." );
+					IOFunctions.printlnSafe( new Date( System.currentTimeMillis() ) + ": Opening '" + sldFile.getName() + "' for reading image data." );
 					r.setId( sldFile.getAbsolutePath() );
 				}
 
@@ -254,7 +275,7 @@ public class LegacySlideBook6ImgLoader extends AbstractImgFactoryImgLoader
 				r.setSeries( c );
 			}
 
-			IOFunctions.println(
+			IOFunctions.printlnSafe(
 					new Date( System.currentTimeMillis() ) + ": Reading image data from '" + sldFile.getName() + "' [" + dim[ 0 ] + "x" + dim[ 1 ] + "x" + dim[ 2 ] +
 					" angle=" + a.getName() + " ch=" + ch.getName() + " illum=" + i.getName() + " tp=" + t.getName() + " type=" + meta.pixelTypeString() +
 					" img=" + img.getClass().getSimpleName() + "<" + type.getClass().getSimpleName() + ">]" );
@@ -270,7 +291,7 @@ public class LegacySlideBook6ImgLoader extends AbstractImgFactoryImgLoader
 
 				r.openBytes( r.getIndex( z, chIndex, t.getId() ), b );
 
-				IOFunctions.println("reader.readImagePlaneBuf z = " + z + ", capture = " + c + ", angle = " + a.getId() +
+				IOFunctions.printlnSafe("reader.readImagePlaneBuf z = " + z + ", capture = " + c + ", angle = " + a.getId() +
 				", channel = " + (chIndex) + ", channels = " + meta.numChannels(c) + ", timepoint = " + t.getId());
 
 				// SlideBook6Reader.dll
@@ -288,8 +309,8 @@ public class LegacySlideBook6ImgLoader extends AbstractImgFactoryImgLoader
 		}
 		catch ( Exception e )
 		{
-			IOFunctions.println("File '" + sldFile.getAbsolutePath() + "' could not be opened: " + e);
-			IOFunctions.println( "Stopping" );
+			IOFunctions.printlnSafe("File '" + sldFile.getAbsolutePath() + "' could not be opened: " + e);
+			IOFunctions.printlnSafe( "Stopping" );
 
 			e.printStackTrace();
 			return null;

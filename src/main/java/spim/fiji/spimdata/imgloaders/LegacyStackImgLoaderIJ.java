@@ -1,3 +1,24 @@
+/*-
+ * #%L
+ * Fiji distribution of ImageJ for the life sciences.
+ * %%
+ * Copyright (C) 2007 - 2017 Fiji developers.
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 2 of the
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-2.0.html>.
+ * #L%
+ */
 package spim.fiji.spimdata.imgloaders;
 
 import ij.ImagePlus;
@@ -48,7 +69,7 @@ public class LegacyStackImgLoaderIJ extends LegacyStackImgLoader
 
 		if ( imp == null )
 		{
-			IOFunctions.println( "Could not open file with ImageJ TIFF reader: '" + file.getAbsolutePath() + "'" );
+			IOFunctions.printlnSafe( "Could not open file with ImageJ TIFF reader: '" + file.getAbsolutePath() + "'" );
 			return null;
 		}
 
@@ -72,7 +93,7 @@ public class LegacyStackImgLoaderIJ extends LegacyStackImgLoader
 		if ( file == null )
 			throw new RuntimeException( "Could not find file '" + file + "'." );
 
-		IOFunctions.println( new Date( System.currentTimeMillis() ) + ": Loading '" + file + "' ..." );
+		IOFunctions.printlnSafe( new Date( System.currentTimeMillis() ) + ": Loading '" + file + "' ..." );
 
 		final ImagePlus imp = open( file );
 
@@ -85,7 +106,7 @@ public class LegacyStackImgLoaderIJ extends LegacyStackImgLoader
 		if ( img == null )
 			throw new RuntimeException( "Could not instantiate " + getImgFactory().getClass().getSimpleName() + " for '" + file + "', most likely out of memory." );
 		else
-			IOFunctions.println( new Date( System.currentTimeMillis() ) + ": Opened '" + file + "' [" + dim[ 0 ] + "x" + dim[ 1 ] + "x" + dim[ 2 ] + " image=" + img.getClass().getSimpleName() + "<FloatType>]" );
+			IOFunctions.printlnSafe( new Date( System.currentTimeMillis() ) + ": Opened '" + file + "' [" + dim[ 0 ] + "x" + dim[ 1 ] + "x" + dim[ 2 ] + " image=" + img.getClass().getSimpleName() + "<FloatType>]" );
 
 		imagePlus2ImgLib2Img( imp, img, normalize );
 
@@ -210,7 +231,7 @@ public class LegacyStackImgLoaderIJ extends LegacyStackImgLoader
 		if ( file == null )
 			throw new RuntimeException( "Could not find file '" + file + "'." );
 
-		IOFunctions.println( new Date( System.currentTimeMillis() ) + ": Loading '" + file + "' ..." );
+		IOFunctions.printlnSafe( new Date( System.currentTimeMillis() ) + ": Loading '" + file + "' ..." );
 
 		final ImagePlus imp = open( file );
 
@@ -223,7 +244,7 @@ public class LegacyStackImgLoaderIJ extends LegacyStackImgLoader
 		if ( imp.getType() == ImagePlus.GRAY32 )
 		{
 			is32bit = true;
-			IOFunctions.println( new Date( System.currentTimeMillis() ) + ": Image '" + file + "' is 32bit, opening as 16bit with scaling" );
+			IOFunctions.printlnSafe( new Date( System.currentTimeMillis() ) + ": Image '" + file + "' is 32bit, opening as 16bit with scaling" );
 
 			if ( params == null )
 				params = queryParameters();
@@ -246,7 +267,7 @@ public class LegacyStackImgLoaderIJ extends LegacyStackImgLoader
 		if ( img == null )
 			throw new RuntimeException( "Could not instantiate " + getImgFactory().getClass().getSimpleName() + " for '" + file + "', most likely out of memory." );
 		else
-			IOFunctions.println( new Date( System.currentTimeMillis() ) + ": Opened '" + file + "' [" + dim[ 0 ] + "x" + dim[ 1 ] + "x" + dim[ 2 ] + " image=" + img.getClass().getSimpleName() + "<UnsignedShortType>]" );
+			IOFunctions.printlnSafe( new Date( System.currentTimeMillis() ) + ": Opened '" + file + "' [" + dim[ 0 ] + "x" + dim[ 1 ] + "x" + dim[ 2 ] + " image=" + img.getClass().getSimpleName() + "<UnsignedShortType>]" );
 
 		final ImageStack stack = imp.getStack();
 		final int sizeZ = imp.getStack().getSize();

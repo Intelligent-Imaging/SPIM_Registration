@@ -1,3 +1,24 @@
+/*-
+ * #%L
+ * Fiji distribution of ImageJ for the life sciences.
+ * %%
+ * Copyright (C) 2007 - 2017 Fiji developers.
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 2 of the
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-2.0.html>.
+ * #L%
+ */
 package mpicbg.pointdescriptor.model;
 
 import java.util.Collection;
@@ -8,8 +29,8 @@ import mpicbg.models.PointMatch;
 /**
  * 2d-rigid transformation models to be applied to points in 2d-space.
  * This model includes the closed form weighted least squares solution as
- * described by \citet{SchaeferAl06} and implemented by Johannes Schindelin.  
- * 
+ * described by \citet{SchaeferAl06} and implemented by Johannes Schindelin.
+ *
  * BibTeX:
  * <pre>
  * &#64;article{SchaeferAl06,
@@ -25,42 +46,42 @@ import mpicbg.models.PointMatch;
  *   url       = {http://faculty.cs.tamu.edu/schaefer/research/mls.pdf},
  * }
  * </pre>
- * 
+ *
  * @author Stephan Saalfeld (saalfeld@mpi-cbg.de)
  * @version 0.1b
- * 
+ *
  */
-public class TranslationInvariantRigidModel2D extends TranslationInvariantModel<TranslationInvariantRigidModel2D> 
+public class TranslationInvariantRigidModel2D extends TranslationInvariantModel<TranslationInvariantRigidModel2D>
 {
 	static final protected int MIN_NUM_MATCHES = 2;
-	
-	protected double cos = 1.0, sin = 0.0, tx = 0.0, ty = 0.0;
+
+	protected double cos = 1.0, sin = 0.0;
 	protected double itx = 0.0, ity = 0.0;
-	
+
 	@Override
 	public boolean canDoNumDimension( final int numDimensions ) { return numDimensions == 2; }
-	
+
 	@Override
 	final public int getMinNumMatches(){ return MIN_NUM_MATCHES; }
-		
+
 	@Override
 	final public double[] apply( final double[] l )
 	{
 		assert l.length == 2 : "2d rigid transformations can be applied to 2d points only.";
-		
+
 		final double[] transformed = l.clone();
 		applyInPlace( transformed );
 		return transformed;
 	}
-	
+
 	@Override
 	final public void applyInPlace( final double[] l )
 	{
 		assert l.length == 2 : "2d rigid transformations can be applied to 2d points only.";
-		
+
 		final double l0 = l[ 0 ];
-		l[ 0 ] = cos * l0 - sin * l[ 1 ] + tx;
-		l[ 1 ] = sin * l0 + cos * l[ 1 ] + ty;
+		l[ 0 ] = cos * l0 - sin * l[ 1 ];
+		l[ 1 ] = sin * l0 + cos * l[ 1 ];
 	}
 
 	@Override
@@ -69,26 +90,22 @@ public class TranslationInvariantRigidModel2D extends TranslationInvariantModel<
 		final TranslationInvariantRigidModel2D m = new TranslationInvariantRigidModel2D();
 		m.cos = cos;
 		m.sin = sin;
-		m.tx = tx;
-		m.ty = ty;
 		m.itx = itx;
 		m.ity = ity;
 		m.cost = cost;
 		return m;
 	}
-	
+
 	@Override
 	final public void set( final TranslationInvariantRigidModel2D m )
 	{
 		cos = m.cos;
 		sin = m.sin;
-		tx = m.tx;
-		ty = m.ty;
 		itx = m.itx;
 		ity = m.ity;
 		cost = m.cost;
 	}
-	
+
 	/**
 	 * Closed form weighted least squares solution as described by
 	 * \citet{SchaeferAl06} and implemented by Johannes Schindelin.
@@ -98,12 +115,12 @@ public class TranslationInvariantRigidModel2D extends TranslationInvariantModel<
 		throws NotEnoughDataPointsException
 	{
 		if ( matches.size() < MIN_NUM_MATCHES ) throw new NotEnoughDataPointsException( matches.size() + " data points are not enough to estimate a 2d rigid model, at least " + MIN_NUM_MATCHES + " data points required." );
-				
+
 		cos = 0;
 		sin = 0;
 		for ( final P m : matches )
 		{
-			final double[] p = m.getP1().getL(); 
+			final double[] p = m.getP1().getL();
 			final double[] q = m.getP2().getW();
 			final double w = m.getWeight();
 
@@ -116,6 +133,6 @@ public class TranslationInvariantRigidModel2D extends TranslationInvariantModel<
 		}
 		final double norm = Math.sqrt( cos * cos + sin * sin );
 		cos /= norm;
-		sin /= norm;		
+		sin /= norm;
 	}
 }

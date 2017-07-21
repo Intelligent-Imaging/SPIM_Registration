@@ -1,3 +1,24 @@
+/*-
+ * #%L
+ * Fiji distribution of ImageJ for the life sciences.
+ * %%
+ * Copyright (C) 2007 - 2017 Fiji developers.
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 2 of the
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-2.0.html>.
+ * #L%
+ */
 package spim.fiji.spimdata.imgloaders;
 
 import java.io.File;
@@ -85,10 +106,10 @@ public class LegacyMicroManagerImgLoader extends AbstractImgLoader
 
 		if ( countDroppedFrames > 0 )
 		{
-			IOFunctions.println( "(" + new Date( System.currentTimeMillis() ) + "): WARNING!!! " + countDroppedFrames + " DROPPED FRAME(s) in timepoint="  + t + " viewsetup=" + vd.getViewSetupId() + " following slices:" );
+			IOFunctions.printlnSafe( "(" + new Date( System.currentTimeMillis() ) + "): WARNING!!! " + countDroppedFrames + " DROPPED FRAME(s) in timepoint="  + t + " viewsetup=" + vd.getViewSetupId() + " following slices:" );
 
 			for ( final int z : slices )
-				IOFunctions.println( "(" + new Date( System.currentTimeMillis() ) + "): slice=" + z );
+				IOFunctions.printlnSafe( "(" + new Date( System.currentTimeMillis() ) + "): slice=" + z );
 		}
 	}
 
@@ -115,7 +136,7 @@ public class LegacyMicroManagerImgLoader extends AbstractImgLoader
 		}
 		catch ( Exception e )
 		{
-			IOFunctions.println( "Failed to load viewsetup=" + view.getViewSetupId() + " timepoint=" + view.getTimePointId() + ": " + e );
+			IOFunctions.printlnSafe( "Failed to load viewsetup=" + view.getViewSetupId() + " timepoint=" + view.getTimePointId() + ": " + e );
 			e.printStackTrace();
 			return null;
 		}
@@ -141,7 +162,7 @@ public class LegacyMicroManagerImgLoader extends AbstractImgLoader
 		}
 		catch ( Exception e )
 		{
-			IOFunctions.println( "Failed to load viewsetup=" + view.getViewSetupId() + " timepoint=" + view.getTimePointId() + ": " + e );
+			IOFunctions.printlnSafe( "Failed to load viewsetup=" + view.getViewSetupId() + " timepoint=" + view.getTimePointId() + ": " + e );
 			e.printStackTrace();
 			return null;
 		}
@@ -160,7 +181,7 @@ public class LegacyMicroManagerImgLoader extends AbstractImgLoader
 		}
 		catch ( Exception e )
 		{
-			IOFunctions.println( "Failed to load metadata for viewsetup=" + view.getViewSetupId() + " timepoint=" + view.getTimePointId() + ": " + e );
+			IOFunctions.printlnSafe( "Failed to load metadata for viewsetup=" + view.getViewSetupId() + " timepoint=" + view.getTimePointId() + ": " + e );
 			e.printStackTrace();
 		}
 	}
